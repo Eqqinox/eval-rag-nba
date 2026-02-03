@@ -2,6 +2,7 @@
 import streamlit as st
 import os
 import logging
+import logfire
 from mistralai import Mistral, UserMessage
 from dotenv import load_dotenv
 
@@ -135,52 +136,49 @@ if prompt := st.chat_input(f"Posez votre question sur la {NAME}..."):
     if vector_store_manager is None:
         st.error("Le service de recherche de connaissances n'est pas disponible. Impossible de traiter votre demande.")
         logging.error("VectorStoreManager non disponible pour la recherche.")
-        # On arrête ici car on ne peut pas faire de RAG
         st.stop()
 
-    # 3. Rechercher le contexte dans le Vector Store
-    try:
-        logging.info(f"Recherche de contexte pour la question: '{prompt}' avec k={SEARCH_K}")
-        search_results = vector_store_manager.search(prompt, k=SEARCH_K)
-        logging.info(f"{len(search_results)} chunks trouvés dans le Vector Store.")
-    except Exception as e:
-        st.error(f"Une erreur est survenue lors de la recherche d'informations pertinentes: {e}")
-        logging.exception(f"Erreur pendant vector_store_manager.search pour la query: {prompt}")
-        search_results = [] # On continue sans contexte si la recherche échoue
+    with logfire.span("pipeline-rag-complet", question=prompt):
+        # 3. Rechercher le contexte dans le Vector Store
+        try:
+            search_results = vector_store_manager.search(prompt, k=SEARCH_K)
+        except Exception as e:
+            st.error(f"Une erreur est survenue lors de la recherche d'informations pertinentes: {e}")
+            logging.exception(f"Erreur pendant vector_store_manager.search pour la query: {prompt}")
+            search_results = []
 
-    # 4. Formater le contexte pour le prompt LLM
-    context_str = "\n\n---\n\n".join([
-        f"Source: {res.metadata.source} (Score: {res.score:.1f}%)\nContenu: {res.text}"
-        for res in search_results
-    ])
+        # 4. Formater le contexte pour le prompt LLM
+        context_str = "\n\n---\n\n".join([
+            f"Source: {res.metadata.source} (Score: {res.score:.1f}%)\nContenu: {res.text}"
+            for res in search_results
+        ])
 
-    if not search_results:
-        context_str = "Aucune information pertinente trouvée dans la base de connaissances pour cette question."
-        logging.warning(f"Aucun contexte trouvé pour la query: {prompt}")
+        if not search_results:
+            context_str = "Aucune information pertinente trouvée dans la base de connaissances pour cette question."
+            logging.warning(f"Aucun contexte trouvé pour la query: {prompt}")
 
-    # 5. Construire le prompt final pour l'API Mistral en utilisant le System Prompt RAG
-    final_prompt_for_llm = SYSTEM_PROMPT.format(context_str=context_str, question=prompt)
+        # 5. Construire le prompt final pour l'API Mistral
+        final_prompt_for_llm = SYSTEM_PROMPT.format(context_str=context_str, question=prompt)
+        messages_for_api = [UserMessage(content=final_prompt_for_llm)]
 
-    # Créer la liste de messages pour l'API (juste le prompt système/utilisateur combiné)
-    messages_for_api = [
-        UserMessage(content=final_prompt_for_llm)
-    ]
+        # === Fin de la logique RAG ===
 
-    # === Fin de la logique RAG ===
+        # 6. Afficher indicateur + Générer la réponse de l'assistant via LLM
+        with st.chat_message("assistant"):
+            message_placeholder = st.empty()
+            message_placeholder.text("...")
 
+            with logfire.span("appel-llm", modele=model):
+                response_content = generer_reponse(messages_for_api)
+                logfire.info(
+                    "Réponse LLM générée",
+                    longueur_reponse=len(response_content),
+                    nb_contextes=len(search_results),
+                )
 
-    # 6. Afficher indicateur + Générer la réponse de l'assistant via LLM
-    with st.chat_message("assistant"):
-        message_placeholder = st.empty()
-        message_placeholder.text("...") # Indicateur simple
+            message_placeholder.write(response_content)
 
-        # Génération de la réponse de l'assistant en utilisant le prompt augmenté
-        response_content = generer_reponse(messages_for_api)
-
-        # Affichage de la réponse complète
-        message_placeholder.write(response_content)
-
-    # 7. Ajouter la réponse de l'assistant à l'historique (pour affichage UI)
+    # 7. Ajouter la réponse de l'assistant à l'historique
     st.session_state.messages.append({"role": "assistant", "content": response_content})
 
 # Petit pied de page optionnel

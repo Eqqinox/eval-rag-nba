@@ -7,6 +7,7 @@ avec entrées/sorties typées et validées.
 from dataclasses import dataclass
 from typing import List
 
+import logfire
 from mistralai import Mistral
 from pydantic_ai import Agent, RunContext
 from pydantic_ai.models.mistral import MistralModel
@@ -66,10 +67,11 @@ def run_embedding_agent(texts: List[str]) -> EmbeddingResult:
     Fonction synchrone pour générer des embeddings via l'agent Pydantic AI.
     Retourne un EmbeddingResult validé.
     """
-    deps = EmbeddingDependencies(
-        api_key=settings.mistral_api_key,
-        embedding_model=settings.embedding_model,
-    )
-    prompt = f"Génère les embeddings pour les {len(texts)} textes suivants."
-    result = embedding_agent.run_sync(prompt, deps=deps)
-    return result.output
+    with logfire.span("agent-embedding", nb_textes=len(texts)):
+        deps = EmbeddingDependencies(
+            api_key=settings.mistral_api_key,
+            embedding_model=settings.embedding_model,
+        )
+        prompt = f"Génère les embeddings pour les {len(texts)} textes suivants."
+        result = embedding_agent.run_sync(prompt, deps=deps)
+        return result.output

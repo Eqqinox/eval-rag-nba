@@ -5,7 +5,9 @@ Les paramètres sont chargés depuis les variables d'environnement et le fichier
 
 import os
 import logging
+from typing import Optional
 
+import logfire
 from pydantic import Field, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
@@ -41,6 +43,9 @@ class PipelineSettings(BaseSettings):
     # --- Configuration de la base de données ---
     database_dir: str = Field(default="database", description="Dossier de la base de données")
 
+    # --- Logfire ---
+    logfire_token: Optional[str] = Field(default=None, description="Token Pydantic Logfire")
+
     # --- Configuration de l'application ---
     app_title: str = Field(default="NBA Analyst AI", description="Titre de l'application")
     name: str = Field(default="NBA", description="Nom affiché dans l'interface")
@@ -74,6 +79,14 @@ class PipelineSettings(BaseSettings):
 
 # --- Instance globale ---
 settings = PipelineSettings()
+
+# --- Initialisation Logfire ---
+if settings.logfire_token:
+    logfire.configure(token=settings.logfire_token)
+    logfire.instrument_pydantic()
+    logging.info("Logfire configuré et instrumentation Pydantic activée.")
+else:
+    logging.info("Logfire non configuré (LOGFIRE_TOKEN absent).")
 
 # --- Aliases de compatibilité ---
 # Permet aux imports existants (from utils.config import MISTRAL_API_KEY) de continuer à fonctionner

@@ -9,6 +9,7 @@ dependencies = [
     "faiss-cpu==1.10.0",
     "langchain==0.3.23",
     "langchain-mistralai>=0.2.12",
+    "logfire>=4.21.0",
     "mistralai>=1.0",
     "openpyxl==3.1.5",
     "pandas==2.2.3",

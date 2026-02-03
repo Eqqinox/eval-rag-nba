@@ -14,6 +14,7 @@ import time
 from datetime import datetime
 from typing import Any, Dict, List
 
+import logfire
 import numpy as np
 import pandas as pd
 from mistralai import Mistral, UserMessage
@@ -88,46 +89,54 @@ def run_rag_pipeline(
     Exécute le pipeline RAG complet pour une question.
     Reproduit la logique de MistralChat.py sans Streamlit.
     """
-    # 1. Recherche dans le vector store
-    search_results = vector_store.search(question, k=search_k)
+    with logfire.span("pipeline-rag", question=question[:80]):
+        # 1. Recherche dans le vector store
+        search_results = vector_store.search(question, k=search_k)
 
-    # 2. Formatage du contexte (identique à MistralChat.py)
-    if search_results:
-        context_str = "\n\n---\n\n".join([
-            f"Source: {res.metadata.source} "
-            f"(Score: {res.score:.1f}%)\n"
-            f"Contenu: {res.text}"
-            for res in search_results
-        ])
-    else:
-        context_str = (
-            "Aucune information pertinente trouvée dans la base "
-            "de connaissances pour cette question."
+        # 2. Formatage du contexte
+        if search_results:
+            context_str = "\n\n---\n\n".join([
+                f"Source: {res.metadata.source} "
+                f"(Score: {res.score:.1f}%)\n"
+                f"Contenu: {res.text}"
+                for res in search_results
+            ])
+        else:
+            context_str = (
+                "Aucune information pertinente trouvée dans la base "
+                "de connaissances pour cette question."
+            )
+
+        # 3. Construction du prompt
+        final_prompt = SYSTEM_PROMPT_TEMPLATE.format(
+            context_str=context_str, question=question
         )
 
-    # 3. Construction du prompt
-    final_prompt = SYSTEM_PROMPT_TEMPLATE.format(
-        context_str=context_str, question=question
-    )
+        # 4. Appel LLM
+        with logfire.span("appel-llm", modele=model_name):
+            messages = [UserMessage(content=final_prompt)]
+            response = mistral_client.chat.complete(
+                model=model_name,
+                messages=messages,
+                temperature=0.1,
+            )
+            answer = response.choices[0].message.content
 
-    # 4. Appel LLM via le nouveau SDK Mistral
-    messages = [UserMessage(content=final_prompt)]
-    response = mistral_client.chat.complete(
-        model=model_name,
-        messages=messages,
-        temperature=0.1,
-    )
-    answer = response.choices[0].message.content
+        # 5. Extraction des contextes pour RAGAS
+        retrieved_contexts = [res.text for res in search_results]
 
-    # 5. Extraction des contextes pour RAGAS
-    retrieved_contexts = [res.text for res in search_results]
+        logfire.info(
+            "Pipeline RAG terminé",
+            nb_contextes=len(retrieved_contexts),
+            longueur_reponse=len(answer),
+        )
 
-    return {
-        "question": question,
-        "response": answer,
-        "retrieved_contexts": retrieved_contexts,
-        "search_results": search_results,
-    }
+        return {
+            "question": question,
+            "response": answer,
+            "retrieved_contexts": retrieved_contexts,
+            "search_results": search_results,
+        }
 
 
 def run_all_questions(
@@ -348,49 +357,48 @@ def save_results(
 def main():
     """Fonction principale d'évaluation."""
     start_time = time.time()
-    logger.info("Démarrage de l'évaluation RAGAS...")
 
-    # 1. Charger les questions de test
-    questions = load_test_questions()
+    with logfire.span("evaluation-ragas-complete"):
+        # 1. Charger les questions de test
+        questions = load_test_questions()
 
-    # 2. Initialiser le vector store et le client Mistral
-    logger.info("Initialisation du VectorStoreManager...")
-    vector_store = VectorStoreManager()
-    if vector_store.index is None:
-        logger.error("Index FAISS non chargé. Exécutez d'abord 'python indexer.py'.")
-        return
+        # 2. Initialiser le vector store et le client Mistral
+        vector_store = VectorStoreManager()
+        if vector_store.index is None:
+            logger.error("Index FAISS non chargé. Exécutez d'abord 'python indexer.py'.")
+            return
 
-    logger.info("Initialisation du client Mistral...")
-    mistral_client = Mistral(api_key=MISTRAL_API_KEY)
+        mistral_client = Mistral(api_key=MISTRAL_API_KEY)
 
-    # 3. Exécuter le pipeline RAG sur toutes les questions
-    logger.info("Exécution du pipeline RAG...")
-    results = run_all_questions(questions, vector_store, mistral_client)
+        # 3. Exécuter le pipeline RAG sur toutes les questions
+        with logfire.span("execution-pipeline-rag", nb_questions=len(questions)):
+            results = run_all_questions(questions, vector_store, mistral_client)
+            succeeded = sum(1 for r in results if r["response"])
+            logfire.info("Pipeline RAG terminé", reussies=succeeded, total=len(questions))
 
-    # 4. Créer le LLM et les embeddings évaluateurs RAGAS
-    logger.info("Initialisation du LLM et des embeddings RAGAS (wrappers LangChain Mistral)...")
-    ragas_llm = create_ragas_llm()
-    ragas_embeddings = create_ragas_embeddings()
+        # 4. Créer le LLM et les embeddings évaluateurs RAGAS
+        ragas_llm = create_ragas_llm()
+        ragas_embeddings = create_ragas_embeddings()
 
-    # 5. Lancer l'évaluation RAGAS
-    logger.info("Lancement de l'évaluation RAGAS...")
-    df_scores = run_evaluation(results, ragas_llm, ragas_embeddings)
+        # 5. Lancer l'évaluation RAGAS
+        with logfire.span("evaluation-metriques-ragas"):
+            df_scores = run_evaluation(results, ragas_llm, ragas_embeddings)
 
-    # 6. Calculer les agrégats et afficher/sauvegarder
-    metric_cols = [
-        "faithfulness",
-        "answer_relevancy",
-        "context_precision",
-        "context_recall",
-    ]
-    metric_cols = [c for c in metric_cols if c in df_scores.columns]
+        # 6. Calculer les agrégats et afficher/sauvegarder
+        metric_cols = [
+            "faithfulness",
+            "answer_relevancy",
+            "context_precision",
+            "context_recall",
+        ]
+        metric_cols = [c for c in metric_cols if c in df_scores.columns]
 
-    agg_df = compute_aggregate_scores(df_scores, metric_cols)
-    print_results(df_scores, agg_df, metric_cols)
-    save_results(df_scores, agg_df, metric_cols)
+        agg_df = compute_aggregate_scores(df_scores, metric_cols)
+        print_results(df_scores, agg_df, metric_cols)
+        save_results(df_scores, agg_df, metric_cols)
 
-    elapsed = time.time() - start_time
-    logger.info(f"Évaluation terminée en {elapsed:.1f} secondes.")
+        elapsed = time.time() - start_time
+        logfire.info("Évaluation terminée", duree_secondes=round(elapsed, 1))
 
 
 if __name__ == "__main__":
