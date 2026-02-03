@@ -94,9 +94,9 @@ def run_rag_pipeline(
     # 2. Formatage du contexte (identique à MistralChat.py)
     if search_results:
         context_str = "\n\n---\n\n".join([
-            f"Source: {res['metadata'].get('source', 'Inconnue')} "
-            f"(Score: {res['score']:.1f}%)\n"
-            f"Contenu: {res['text']}"
+            f"Source: {res.metadata.source} "
+            f"(Score: {res.score:.1f}%)\n"
+            f"Contenu: {res.text}"
             for res in search_results
         ])
     else:
@@ -120,7 +120,7 @@ def run_rag_pipeline(
     answer = response.choices[0].message.content
 
     # 5. Extraction des contextes pour RAGAS
-    retrieved_contexts = [res["text"] for res in search_results]
+    retrieved_contexts = [res.text for res in search_results]
 
     return {
         "question": question,

@@ -150,7 +150,7 @@ if prompt := st.chat_input(f"Posez votre question sur la {NAME}..."):
 
     # 4. Formater le contexte pour le prompt LLM
     context_str = "\n\n---\n\n".join([
-        f"Source: {res['metadata'].get('source', 'Inconnue')} (Score: {res['score']:.1f}%)\nContenu: {res['text']}"
+        f"Source: {res.metadata.source} (Score: {res.score:.1f}%)\nContenu: {res.text}"
         for res in search_results
     ])
 

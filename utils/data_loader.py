@@ -208,12 +208,15 @@ def download_and_extract_zip(url: str, output_dir: str) -> bool:
         logging.error(f"Erreur inattendue lors du téléchargement/extraction: {e}")
         return False
 
-def load_and_parse_files(input_dir: str) -> List[Dict[str, any]]:
+def load_and_parse_files(input_dir: str) -> List["Document"]:
     """
     Charge et parse récursivement les fichiers d'un répertoire.
-    Retourne une liste de dictionnaires, chacun représentant un document.
+    Retourne une liste de documents validés avec Pydantic.
     """
+    from .schemas import Document, DocumentMetadata
+
     documents = []
+    skipped = 0
     input_path = Path(input_dir)
     if not input_path.is_dir():
         logging.error(f"Le répertoire d'entrée '{input_dir}' n'existe pas.")
@@ -225,7 +228,7 @@ def load_and_parse_files(input_dir: str) -> List[Dict[str, any]]:
             relative_path = file_path.relative_to(input_path)
             source_folder = relative_path.parts[0] if len(relative_path.parts) > 1 else "root"
             ext = file_path.suffix.lower()
-            
+
             logging.debug(f"Traitement du fichier: {relative_path} (Dossier source: {source_folder})")
 
             extracted_content = None
@@ -239,7 +242,6 @@ def load_and_parse_files(input_dir: str) -> List[Dict[str, any]]:
                 extracted_content = extract_text_from_csv(str(file_path))
             elif ext in [".xlsx", ".xls"]:
                 extracted_content = extract_text_from_excel(str(file_path))
-            # Suppression de la gestion des fichiers HTML
             else:
                 logging.warning(f"Type de fichier non supporté ignoré: {relative_path}")
                 continue
@@ -247,30 +249,39 @@ def load_and_parse_files(input_dir: str) -> List[Dict[str, any]]:
             if not extracted_content:
                 logging.warning(f"Aucun contenu n'a pu être extrait de {relative_path}")
                 continue
-            
+
             # Si c'est un dictionnaire (plusieurs feuilles Excel), créer un doc par feuille
+            raw_docs = []
             if isinstance(extracted_content, dict):
                 for sheet_name, text in extracted_content.items():
-                    documents.append({
-                        "page_content": text,
-                        "metadata": {
-                            "source": f"{str(relative_path)} (Feuille: {sheet_name})",
-                            "filename": file_path.name,
-                            "sheet": sheet_name,
-                            "category": source_folder,
-                            "full_path": str(file_path.resolve())
-                        }
-                    })
-            else: # Pour tous les autres types de fichiers
-                 documents.append({
-                    "page_content": extracted_content,
-                    "metadata": {
-                        "source": str(relative_path),
+                    raw_docs.append((text, {
+                        "source": f"{str(relative_path)} (Feuille: {sheet_name})",
                         "filename": file_path.name,
+                        "sheet": sheet_name,
                         "category": source_folder,
-                        "full_path": str(file_path.resolve())
-                    }
-                })
+                        "full_path": str(file_path.resolve()),
+                    }))
+            else:
+                raw_docs.append((extracted_content, {
+                    "source": str(relative_path),
+                    "filename": file_path.name,
+                    "category": source_folder,
+                    "full_path": str(file_path.resolve()),
+                }))
 
-    logging.info(f"{len(documents)} documents chargés et parsés.")
+            # Validation Pydantic de chaque document
+            for content, meta_dict in raw_docs:
+                try:
+                    doc = Document(
+                        page_content=content,
+                        metadata=DocumentMetadata(**meta_dict),
+                    )
+                    documents.append(doc)
+                except Exception as e:
+                    skipped += 1
+                    logging.warning(
+                        f"Document ignoré (validation échouée) : {meta_dict.get('source', '?')} - {e}"
+                    )
+
+    logging.info(f"{len(documents)} documents chargés et validés ({skipped} ignorés).")
     return documents

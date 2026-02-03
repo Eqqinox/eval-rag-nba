@@ -672,6 +672,19 @@ http = [
 ]
 
 [[package]]
+name = "genai-prices"
+version = "0.0.52"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "httpx" },
+    { name = "pydantic" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/8e/87/bdc11c1671e3a3fe701c3c4aaae4aa2bb7a84a6bb1812dfb5693c87d3872/genai_prices-0.0.52.tar.gz", hash = "sha256:0df7420b555fa3a48d09e5c7802ba35b5dfa9fd49b0c3bb2c150c59060d83f52", size = 58364, upload-time = "2026-01-28T12:07:49.386Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/35/33/6316b4907a0bffc1bcc99074c7e2d01184fdfeee401c864146a40d55ad10/genai_prices-0.0.52-py3-none-any.whl", hash = "sha256:639e7a2ae7eddf5710febb9779b9c9e31ff5acf464b4eb1f6018798ea642e6d3", size = 60937, upload-time = "2026-01-28T12:07:47.921Z" },
+]
+
+[[package]]
 name = "gitdb"
 version = "4.0.12"
 source = { registry = "https://pypi.org/simple" }
@@ -752,6 +765,18 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/97/43/8bf0ffa3d498eeee4c58c212a3905dd6146c01c8dc0b0a046481ca29b18c/greenlet-3.3.1-cp314-cp314t-musllinux_1_2_aarch64.whl", hash = "sha256:ed6b402bc74d6557a705e197d47f9063733091ed6357b3de33619d8a8d93ac53", size = 1614917, upload-time = "2026-01-23T16:04:26.276Z" },
     { url = "https://files.pythonhosted.org/packages/89/90/a3be7a5f378fc6e84abe4dcfb2ba32b07786861172e502388b4c90000d1b/greenlet-3.3.1-cp314-cp314t-musllinux_1_2_x86_64.whl", hash = "sha256:59913f1e5ada20fde795ba906916aea25d442abcc0593fba7e26c92b7ad76249", size = 1676092, upload-time = "2026-01-23T15:33:52.176Z" },
     { url = "https://files.pythonhosted.org/packages/e1/2b/98c7f93e6db9977aaee07eb1e51ca63bd5f779b900d362791d3252e60558/greenlet-3.3.1-cp314-cp314t-win_amd64.whl", hash = "sha256:301860987846c24cb8964bdec0e31a96ad4a2a801b41b4ef40963c1b44f33451", size = 233181, upload-time = "2026-01-23T15:33:00.29Z" },
+]
+
+[[package]]
+name = "griffe"
+version = "1.15.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "colorama" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/0d/0c/3a471b6e31951dce2360477420d0a8d1e00dea6cf33b70f3e8c3ab6e28e1/griffe-1.15.0.tar.gz", hash = "sha256:7726e3afd6f298fbc3696e67958803e7ac843c1cfe59734b6251a40cdbfb5eea", size = 424112, upload-time = "2025-11-10T15:03:15.52Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/9c/83/3b1d03d36f224edded98e9affd0467630fc09d766c0e56fb1498cbb04a9b/griffe-1.15.0-py3-none-any.whl", hash = "sha256:6f6762661949411031f5fcda9593f586e6ce8340f0ba88921a0f2ef7a81eb9a3", size = 150705, upload-time = "2025-11-10T15:03:13.549Z" },
 ]
 
 [[package]]
@@ -1191,6 +1216,15 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/6f/6b/c875b30a1ba490860c93da4cabf479e03f584eba06fe5963f6f6644653d8/lazy_loader-0.4.tar.gz", hash = "sha256:47c75182589b91a4e1a85a136c074285a5ad4d9f39c63e0d7fb76391c4574cd1", size = 15431, upload-time = "2024-04-05T13:03:12.261Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/83/60/d497a310bde3f01cb805196ac61b7ad6dc5dcf8dce66634dc34364b20b4f/lazy_loader-0.4-py3-none-any.whl", hash = "sha256:342aa8e14d543a154047afb4ba8ef17f5563baad3fc610d7b15b213b0f119efc", size = 12097, upload-time = "2024-04-05T13:03:10.514Z" },
+]
+
+[[package]]
+name = "logfire-api"
+version = "4.21.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/b0/d5/c183261d5560e33335443b377c921aa6a15e9890ceac63024237e8c1279b/logfire_api-4.21.0.tar.gz", hash = "sha256:5d709a0d3adfd573db70964cb48c03b750966de395ed9c8da4de111707a75fab", size = 59331, upload-time = "2026-01-28T18:55:44.985Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/d7/00/5045f889be4a450b321db998d0a5581d30423138a04dffe18b52730cb926/logfire_api-4.21.0-py3-none-any.whl", hash = "sha256:32f9b48e6b73c270d1aeb6478dcbecc5f82120b8eae70559e0d1b05d1b86541e", size = 98061, upload-time = "2026-01-28T18:55:42.342Z" },
 ]
 
 [[package]]
@@ -2176,6 +2210,7 @@ dependencies = [
     { name = "openpyxl" },
     { name = "pandas" },
     { name = "pillow" },
+    { name = "pydantic-ai-slim", extra = ["mistral"] },
     { name = "pymupdf" },
     { name = "pypdf2" },
     { name = "python-docx" },
@@ -2197,6 +2232,7 @@ requires-dist = [
     { name = "openpyxl", specifier = "==3.1.5" },
     { name = "pandas", specifier = "==2.2.3" },
     { name = "pillow", specifier = ">=9.0.0" },
+    { name = "pydantic-ai-slim", extras = ["mistral"], specifier = ">=1.52.0" },
     { name = "pymupdf", specifier = ">=1.22.0" },
     { name = "pypdf2", specifier = "==3.0.1" },
     { name = "python-docx", specifier = "==1.1.2" },
@@ -2433,6 +2469,29 @@ wheels = [
 ]
 
 [[package]]
+name = "pydantic-ai-slim"
+version = "1.52.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "genai-prices" },
+    { name = "griffe" },
+    { name = "httpx" },
+    { name = "opentelemetry-api" },
+    { name = "pydantic" },
+    { name = "pydantic-graph" },
+    { name = "typing-inspection" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/04/89/09f263b957185a8ae5c088fb37e2513c03618e4fd189410a10babc9121f3/pydantic_ai_slim-1.52.0.tar.gz", hash = "sha256:e89b609163c5465450a1c20c4f44ddcdfc0ec09d7715ab20a4e8e31a4151c47d", size = 405607, upload-time = "2026-02-03T00:51:06.504Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/f6/b1/a1e994e26c7a1af409f9114aaff936379bfcccac7c20f5a5c746a77214a5/pydantic_ai_slim-1.52.0-py3-none-any.whl", hash = "sha256:9510a02fdae13e4583ce6e9e500d4c43acb5428238a671b3e1d255c2f466b2f2", size = 529901, upload-time = "2026-02-03T00:50:56.445Z" },
+]
+
+[package.optional-dependencies]
+mistral = [
+    { name = "mistralai" },
+]
+
+[[package]]
 name = "pydantic-core"
 version = "2.41.5"
 source = { registry = "https://pypi.org/simple" }
@@ -2527,6 +2586,21 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/1f/f2/f11dd73284122713f5f89fc940f370d035fa8e1e078d446b3313955157fe/pydantic_core-2.41.5-pp311-pypy311_pp73-musllinux_1_1_armv7l.whl", hash = "sha256:a668ce24de96165bb239160b3d854943128f4334822900534f2fe947930e5770", size = 2330317, upload-time = "2025-11-04T13:43:40.406Z" },
     { url = "https://files.pythonhosted.org/packages/88/9d/b06ca6acfe4abb296110fb1273a4d848a0bfb2ff65f3ee92127b3244e16b/pydantic_core-2.41.5-pp311-pypy311_pp73-musllinux_1_1_x86_64.whl", hash = "sha256:f14f8f046c14563f8eb3f45f499cc658ab8d10072961e07225e507adb700e93f", size = 2316992, upload-time = "2025-11-04T13:43:43.602Z" },
     { url = "https://files.pythonhosted.org/packages/36/c7/cfc8e811f061c841d7990b0201912c3556bfeb99cdcb7ed24adc8d6f8704/pydantic_core-2.41.5-pp311-pypy311_pp73-win_amd64.whl", hash = "sha256:56121965f7a4dc965bff783d70b907ddf3d57f6eba29b6d2e5dabfaf07799c51", size = 2145302, upload-time = "2025-11-04T13:43:46.64Z" },
+]
+
+[[package]]
+name = "pydantic-graph"
+version = "1.52.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "httpx" },
+    { name = "logfire-api" },
+    { name = "pydantic" },
+    { name = "typing-inspection" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/09/b1/21b868c08e7cac71ee9ea22a3cb2f205df6a9fe8a742be4669120908acf0/pydantic_graph-1.52.0.tar.gz", hash = "sha256:ac63aa93d51940c5411f95af949146eecffaf48e6773173aced4cadff07336d9", size = 58460, upload-time = "2026-02-03T00:51:08.585Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/72/d4/4d299d3a919b0c6cb4a67c906633e5b0f564603aef601f385e121b5f534b/pydantic_graph-1.52.0-py3-none-any.whl", hash = "sha256:3141e5c10a72ad1bdddab58af8d531242d6892d953b6a9fb20c8fe6ba414d735", size = 72343, upload-time = "2026-02-03T00:51:00.264Z" },
 ]
 
 [[package]]
