@@ -1,0 +1,152 @@
+[
+  {
+    "question": "Quel joueur a marqué le plus de points au total cette saison ?",
+    "category": "simple",
+    "reference": "Shai Gilgeous-Alexander (OKC) est le meilleur marqueur de la saison avec 2485 points, un pourcentage de réussite au tir de 51.9% et 76 matchs joués."
+  },
+  {
+    "question": "Qui est le meilleur rebondeur de la saison ?",
+    "category": "simple",
+    "reference": "Ivica Zubac (LAC) est le meilleur rebondeur de la saison avec 1008 rebonds au total."
+  },
+  {
+    "question": "Quel joueur a réalisé le plus de passes décisives ?",
+    "category": "simple",
+    "reference": "Trae Young (ATL) est le leader des passes décisives avec 882 assists sur la saison."
+  },
+  {
+    "question": "Combien d'équipes sont présentes dans les données NBA ?",
+    "category": "simple",
+    "reference": "Il y a 30 équipes NBA dans les données : ATL, BKN, BOS, CHA, CHI, CLE, DAL, DEN, DET, GSW, HOU, IND, LAC, LAL, MEM, MIA, MIL, MIN, NOP, NYK, OKC, ORL, PHI, PHX, POR, SAC, SAS, TOR, UTA, WAS."
+  },
+  {
+    "question": "Combien de joueurs sont répertoriés dans la base de données ?",
+    "category": "simple",
+    "reference": "La base de données contient 569 joueurs NBA répartis sur 30 équipes."
+  },
+  {
+    "question": "Quelles sont les statistiques de Nikola Jokic cette saison ?",
+    "category": "simple",
+    "reference": "Nikola Jokic (DEN) a inscrit 2072 points avec un pourcentage au tir de 57.6%, 889 rebonds et 714 passes décisives en 70 matchs joués."
+  },
+  {
+    "question": "Quel joueur a le meilleur pourcentage de réussite au tir (FG%) parmi les meilleurs marqueurs ?",
+    "category": "simple",
+    "reference": "Parmi les meilleurs marqueurs, Giannis Antetokounmpo (MIL) possède le meilleur pourcentage au tir avec 60.1% FG pour 2037 points marqués."
+  },
+  {
+    "question": "Qui est le meilleur passeur des Los Angeles Clippers ?",
+    "category": "simple",
+    "reference": "James Harden (LAC) est le meilleur passeur des Los Angeles Clippers avec 687 passes décisives."
+  },
+  {
+    "question": "Quels sont les cinq meilleurs marqueurs de la saison ?",
+    "category": "simple",
+    "reference": "Les cinq meilleurs marqueurs sont : 1. Shai Gilgeous-Alexander (OKC) avec 2485 pts, 2. Anthony Edwards (MIN) avec 2180 pts, 3. Nikola Jokic (DEN) avec 2072 pts, 4. Giannis Antetokounmpo (MIL) avec 2037 pts, 5. Jayson Tatum (BOS) avec 1930 pts."
+  },
+  {
+    "question": "Combien de passes décisives a réalisé Tyrese Haliburton cette saison ?",
+    "category": "simple",
+    "reference": "Tyrese Haliburton (IND) a réalisé 672 passes décisives cette saison."
+  },
+  {
+    "question": "Compare les performances offensives et défensives de Nikola Jokic et Giannis Antetokounmpo en termes de points, rebonds, passes décisives et pourcentage au tir.",
+    "category": "complex",
+    "reference": null
+  },
+  {
+    "question": "Quels joueurs cumulent à la fois un nombre élevé de points, de rebonds et de passes décisives, ce qu'on appelle des profils polyvalents ?",
+    "category": "complex",
+    "reference": null
+  },
+  {
+    "question": "Quelle est la corrélation entre le nombre de passes décisives et les victoires des équipes dans les données disponibles ?",
+    "category": "complex",
+    "reference": null
+  },
+  {
+    "question": "Quelles équipes ont le meilleur bilan victoires-défaites et quels sont les joueurs clés de ces équipes en termes de statistiques avancées ?",
+    "category": "complex",
+    "reference": null
+  },
+  {
+    "question": "Analyse l'efficacité au tir (EFG% et TS%) des dix meilleurs marqueurs de la saison. Quels joueurs sont les plus efficaces ?",
+    "category": "complex",
+    "reference": null
+  },
+  {
+    "question": "D'après les discussions Reddit et les statistiques, quelles équipes sont considérées comme favorites pour les playoffs et pourquoi ?",
+    "category": "complex",
+    "reference": null
+  },
+  {
+    "question": "Compare le ratio passes décisives / pertes de balle (AST/TO) des cinq meilleurs passeurs. Quel joueur est le plus fiable dans la gestion du ballon ?",
+    "category": "complex",
+    "reference": null
+  },
+  {
+    "question": "Quels jeunes joueurs (moins de 25 ans) affichent les meilleures statistiques et pourraient être considérés comme les futures stars de la ligue ?",
+    "category": "complex",
+    "reference": null
+  },
+  {
+    "question": "Quel est l'impact de l'avantage du terrain (home court advantage) sur les performances des équipes en playoffs selon les discussions disponibles ?",
+    "category": "complex",
+    "reference": null
+  },
+  {
+    "question": "Comment se situe Reggie Miller en termes d'efficacité par rapport aux autres grands marqueurs de l'histoire des playoffs selon les discussions Reddit ?",
+    "category": "complex",
+    "reference": null
+  },
+  {
+    "question": "mec c koi le joueur ki score le + de 3pts cette saison lol",
+    "category": "noisy",
+    "reference": null
+  },
+  {
+    "question": "jsuis nouveau fan nba, qui est le GOAT des rebondss sur les derniers match??",
+    "category": "noisy",
+    "reference": null
+  },
+  {
+    "question": "Aprés avoir lu un article sur Reddit, je me demande quel joueur fait le plus de dunks en moyenne, mais en fait non, qui a le meilleur taux de lancers francs ?",
+    "category": "noisy",
+    "reference": null
+  },
+  {
+    "question": "stats defense equipe maison vs route svp merci bcp",
+    "category": "noisy",
+    "reference": null
+  },
+  {
+    "question": "On m'a dit que LeBron etait dans les données, c vrai ?? Et aussi quelles equipes jouent a l'extérieur le plus souvent ?",
+    "category": "noisy",
+    "reference": null
+  },
+  {
+    "question": "jokic il é tro fort nn?? ses stats c de la folie genre points rebonds assists tout koi",
+    "category": "noisy",
+    "reference": null
+  },
+  {
+    "question": "yo quelle team a le + de W cette année et pk ils sont si bons dapres vous",
+    "category": "noisy",
+    "reference": null
+  },
+  {
+    "question": "les clippers la sans kawhi il se passent koi??? harden il carry ou pa du tt??",
+    "category": "noisy",
+    "reference": null
+  },
+  {
+    "question": "g vu sur reddit ke reggie miller cetait un sniper en playoff, c vrai ou c du mytho ???",
+    "category": "noisy",
+    "reference": null
+  },
+  {
+    "question": "bon alr qui c le mieu entre trae young et haliburton pour les passe decisives pcq jcomprend pa les stats la",
+    "category": "noisy",
+    "reference": null
+  }
+]
