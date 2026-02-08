@@ -70,7 +70,7 @@ class PipelineSettings(BaseSettings):
 
     @property
     def database_file(self) -> str:
-        return os.path.join(self.database_dir, "interactions.db")
+        return os.path.join(self.database_dir, "nba.db")
 
     @property
     def database_url(self) -> str:
