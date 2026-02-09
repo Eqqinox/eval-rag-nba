@@ -1,5 +1,5 @@
 category,faithfulness,answer_relevancy,context_precision,context_recall
-complex,0.6667,0.7943,,
-noisy,0.1494,0.6155,,
-simple,0.6759,0.4064,0.3,0.1867
-all,0.4639,0.6054,0.3,0.1867
+complex,0.8145,0.72,,
+noisy,0.6378,0.7324,,
+simple,0.8,0.8864,0.7,0.6
+all,0.7544,0.7796,0.7,0.6
