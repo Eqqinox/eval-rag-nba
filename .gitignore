@@ -28,7 +28,6 @@ wheels/
 *.egg-info/
 .installed.cfg
 *.egg
-database/nba.db
 
 # Fichiers de logs
 *.log

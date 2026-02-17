@@ -332,7 +332,7 @@ Le système utilise une base de données SQLite (`database/nba.db`) pour stocker
                               └─────────────────────────────────────┘
 ```
 
-<u>**Table `teams`** (30 lignes)</u>
+<u>**Table `teams`**</u>
 | Colonne | Type | Description |
 |---------|------|-------------|
 | `code` | VARCHAR(3), PK | Code équipe (ex: LAL, BOS, OKC) |
@@ -340,7 +340,7 @@ Le système utilise une base de données SQLite (`database/nba.db`) pour stocker
 
 <br>
 
-<u>**Table `players`** (568 lignes)</u>
+<u>**Table `players`**</u>
 | Catégorie | Colonnes |
 |-----------|----------|
 | Identité | `id`, `name`, `team_code`, `age` |

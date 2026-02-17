@@ -22,6 +22,5 @@ dependencies = [
     "ragas>=0.4.3",
     "requests==2.32.3",
     "streamlit==1.44.1",
-    "streamlit-feedback==0.1.4",
     "tqdm>=4.67.2",
 ]
